@@ -61,5 +61,3 @@ else
     fi
 fi
 }
-
-install_zsh
