@@ -6,11 +6,13 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
-Plugin 'git://git.wincent.com/command-t.git'
+"Plugin 'git://git.wincent.com/command-t.git'
 Plugin 'mileszs/ack.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'scrooloose/syntastic'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'nvie/vim-flake8'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -62,7 +64,7 @@ set backspace=indent,eol,start
 
 syntax enable
 
-autocmd FileType python set omnifunc=pythoncomplete#Complete
+"autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
@@ -111,7 +113,7 @@ if !exists('g:neocomplcache_omni_functions')
     au FileType python set omnifunc=pythoncomplete#Complete
     au FileType python let b:did_ftplugin = 1
     " Vim-jedi settings
-    let g:jedi#popup_on_dot = 0
+    "let g:jedi#popup_on_dot = 0
 
 "Enhance of adition and substraction
 function! AddSubtract(char, back)
@@ -134,8 +136,8 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-" Use flake8
-let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_checkers = ['pep8']
 let g:syntastic_mode_map = { 'mode': 'active',
     \ 'active_filetypes': [],}
-let g:syntastic_python_flake8_args='--ignore=E501, F403'
+"let g:syntastic_python_flake8_args='--ignore=E501, F403'
+

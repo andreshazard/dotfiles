@@ -122,3 +122,6 @@ fi
 export M2_HOME=/home/andreshazard/Downloads/apache-maven-3.3.3
 export M2=$M2_HOME/bin
 export PATH=$M2:$PATH
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+export PATH=$HOME/cmus/bin:$PATH

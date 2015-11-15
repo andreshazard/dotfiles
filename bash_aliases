@@ -2,30 +2,21 @@ alias compile='mvn compile -Pdeveloper -Dmaven.wagon.http.ssl.insecure=true -Dma
 
 alias Ccompile='mvn clean compile -Pdeveloper -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true'
 
-alias update='sudo apt-get update'
+alias upgrade='sudo dnf upgrade'
 
-alias upgrade='sudo apt-get upgrade'
-
-alias intelij='/home/andreshazard/Downloads/Tools/./idea.sh &'
+alias intelij='/home/andreshazard/Downloads/Tools/idea-IC-143.382.35/bin./idea.sh &'
 
 alias 0xdbe='/home/andreshazard/Downloads/Tools/./0xdbe.sh &'
 
-alias fakesmpt='cd /home/andreshazard/Downloads/ && sudo java -jar fakeSMTP-1.13.jar'
-
 alias superbeam='/home/andreshazard/Downloads/superbeam/./start-superbeam.sh &'
-
 
 alias shutdown='sudo shutdown –h now'    #requires root password, disable it by "sudo chmod u+s /sbin/shutdown"
 
 alias restart='sudo shutdown –r now'      #requires root password, disable it by "sudo chmod u+s /sbin/shutdown"
 
-alias suspend='sudo pm-suspend'
+alias suspend='systemctl suspend'
 
 alias lock='gnome-screensaver-command --lock'
-
-alias lyrics='bash /home/andreshazard/bin/spotyLyric.sh &'
-
-alias gifscreen='/home/andreshazard/./byzanaz-gui &'
 
 alias dropCreateSpark='mysql -uroot -p spark -e "drop database spark; create database spark;"'
 alias poblarSpark='gunzip -c spark-nightly.dmp.gz | mysql -uroot -p spark'
@@ -37,5 +28,3 @@ alias dropCreateQuartz='mysql -uroot -p quartz -e "drop database quartz; create 
 alias poblarQuartz='gunzip -c quartz-nightly.dmp.gz | mysql -uroot -p quartz'
 
 alias myip='wget http://ipinfo.io/ip -qO -'
-
-alias lidOption='sudo /home/andreshazard/Downloads/Tools/lidBehaviourScript/lidScript.sh'
