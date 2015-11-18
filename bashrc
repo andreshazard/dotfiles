@@ -119,7 +119,7 @@ fi
 #    esac
 
 
-export M2_HOME=/home/andreshazard/Downloads/apache-maven-3.3.3
+export M2_HOME=/home/andreshazard/Downloads/Tools/apache-maven-3.3.3
 export M2=$M2_HOME/bin
 export PATH=$M2:$PATH
 
