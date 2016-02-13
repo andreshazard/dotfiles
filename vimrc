@@ -13,6 +13,7 @@ Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'scrooloose/syntastic'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'nvie/vim-flake8'
+Plugin 'mhinz/vim-janah'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -139,5 +140,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_python_checkers = ['pep8']
 let g:syntastic_mode_map = { 'mode': 'active',
     \ 'active_filetypes': [],}
-"let g:syntastic_python_flake8_args='--ignore=E501, F403'
+let g:syntastic_python_pep8_args='--ignore=E501,E127,E128'
 
+autocmd ColorScheme janah highlight Normal ctermbg=235
+colorscheme janah
