@@ -51,6 +51,7 @@ set nowritebackup
 set nobackup
 nmap <silent> <C-N> :silent noh<CR>
 set ignorecase
+
 " Highlight search terms...
 set hlsearch
 set incsearch
@@ -90,11 +91,57 @@ imap lh <Esc>
 cmap W w
 cmap Q q
 
+"leader
 let mapleader=","
 
 "Copy and past from the clipboard
 vmap <leader>y "+y
 nmap <leader>p "+p
+
+"Edit file on current directory
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
+map <leader>e :edit %%
+map <leader>v :view %%
+
+"Open Command T
+let g:CommandTCursorStartMap='<leader>f'
+map <leader>f :CommandTFlush<cr>\|:CommandT<cr>
+map <leader>gf :CommandTFlush<cr>\|:CommandT %%<cr>
+
+" Jump to last cursor position unless it's invalid or in an event handler
+autocmd BufReadPost *
+\ if line("'\"") > 0 && line("'\"") <= line("$") |
+\   exe "normal g`\"" |
+\ endif
+
+"This unsets the last search pattern register by hitting return
+nnoremap <CR> :noh<CR><CR>
+
+" Move around splits with <c-hjkl>
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
+
+" Loation of splits 
+set splitbelow
+set splitright
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" MULTIPURPOSE TAB KEY
+" Indent if we're at the beginning of a line. Else, do completion.
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! InsertTabWrapper()
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<tab>"
+    else
+        return "\<c-p>"
+    endif
+endfunction
+inoremap <expr> <tab> InsertTabWrapper()
+inoremap <s-tab> <c-n>
+
 
 
 "NEOCOMPLCACHE SETTINGS for jedi-vim
@@ -139,8 +186,13 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_python_checkers = ['pep8']
 let g:syntastic_mode_map = { 'mode': 'active',
-    \ 'active_filetypes': [],}
-let g:syntastic_python_pep8_args='--ignore=E501,E127,E128'
+    \ 'active_filetypes': ['py'],
+    \ 'pasive_filetyes': ['javac'] }
 
+let g:syntastic_python_pep8_args='--ignore=E501,E127,E128'
+"Hack because syntasttic_mode_map is not working to ignore java files
+let g:loaded_syntastic_java_javac_checker = 1
+
+"Awesome color scheme
 autocmd ColorScheme janah highlight Normal ctermbg=235
 colorscheme janah
