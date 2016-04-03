@@ -1,0 +1,14 @@
+[user]
+    name = Andres Hazard
+    email = andres.hazard@servicerocket.com
+[diff]
+[color]
+    ui = auto
+[alias]
+    st = status
+    ci = commit
+    co = checkout
+    di = diff
+    dc = diff --cached
+    pom = push origin master
+    b = branch
