@@ -4,12 +4,6 @@ alias Ccompile='mvn clean compile -Pdeveloper -Dmaven.wagon.http.ssl.insecure=tr
 
 alias upgrade='sudo dnf upgrade'
 
-alias intelij='/home/andreshazard/Downloads/Tools/idea-IC-143.382.35/bin./idea.sh &'
-
-alias 0xdbe='/home/andreshazard/Downloads/Tools/./0xdbe.sh &'
-
-alias superbeam='/home/andreshazard/Downloads/superbeam/./start-superbeam.sh &'
-
 alias shutdown='sudo shutdown –h now'    #requires root password, disable it by "sudo chmod u+s /sbin/shutdown"
 
 alias restart='sudo shutdown –r now'      #requires root password, disable it by "sudo chmod u+s /sbin/shutdown"
