@@ -14,6 +14,8 @@ Plugin 'scrooloose/syntastic'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'nvie/vim-flake8'
 Plugin 'mhinz/vim-janah'
+Plugin 'rstacruz/sparkup'
+Plugin 'jelera/vim-javascript-syntax'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -66,7 +68,7 @@ set backspace=indent,eol,start
 
 syntax enable
 
-"autocmd FileType python set omnifunc=pythoncomplete#Complete
+" disabled autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
@@ -101,7 +103,7 @@ nmap <leader>p "+p
 "Edit file on current directory
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 map <leader>e :edit %%
-map <leader>v :view %%
+map <leader>v :vsp %%
 
 "Open Command T
 let g:CommandTCursorStartMap='<leader>f'
@@ -118,12 +120,12 @@ autocmd BufReadPost *
 nnoremap <CR> :noh<CR><CR>
 
 " Move around splits with <c-hjkl>
-nnoremap <c-j> <c-w>j
-nnoremap <c-k> <c-w>k
-nnoremap <c-h> <c-w>h
-nnoremap <c-l> <c-w>l
+nnoremap <silent><C-J> <C-W><C-J>:call SplitResize()<CR>
+nnoremap <silent><C-K> <C-W><C-K>:call SplitResize()<CR>
+nnoremap <silent><C-L> <C-W><C-L>:call SplitResize()<CR>
+nnoremap <silent><C-H> <C-W><C-H>:call SplitResize()<CR>
 
-" Loation of splits 
+" Loation of splits
 set splitbelow
 set splitright
 
@@ -132,7 +134,7 @@ set splitright
 " Indent if we're at the beginning of a line. Else, do completion.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! InsertTabWrapper()
-    let col = col('.') - 1
+    let col = col('.') - 0
     if !col || getline('.')[col - 1] !~ '\k'
         return "\<tab>"
     else
@@ -169,13 +171,14 @@ function! AddSubtract(char, back)
    call search(pattern, 'cw' . a:back)
    execute 'normal! ' . v:count1 . a:char
    silent! call repeat#set(":\<C-u>call AddSubtract('" .a:char. "', '" .a:back. "')\<CR>")
- endfunction
- nnoremap <silent>         <C-a> :<C-u>call AddSubtract("\<C-a>", '')<CR>
- nnoremap <silent> <Leader><C-a> :<C-u>call AddSubtract("\<C-a>", 'b')<CR>
- nnoremap <silent>         <C-x> :<C-u>call AddSubtract("\<C-x>", '')<CR>
- nnoremap <silent> <Leader><C-x> :<C-u>call AddSubtract("\<C-x>", 'b')<CR>
+endfunction
 
- "Configuration for Syntastic
+nnoremap <silent>         <C-a> :<C-u>call AddSubtract("\<C-a>", '')<CR>
+nnoremap <silent> <Leader><C-a> :<C-u>call AddSubtract("\<C-a>", 'b')<CR>
+nnoremap <silent>         <C-x> :<C-u>call AddSubtract("\<C-x>", '')<CR>
+nnoremap <silent> <Leader><C-x> :<C-u>call AddSubtract("\<C-x>", 'b')<CR>
+
+"Configuration for Syntastic
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -196,3 +199,16 @@ let g:loaded_syntastic_java_javac_checker = 1
 "Awesome color scheme
 autocmd ColorScheme janah highlight Normal ctermbg=235
 colorscheme janah
+
+
+"Resize splits automatically
+function SplitResize()
+    let hmax = max([winwidth(0), float2nr(&columns*0.66), 90])
+    let vmax = max([winheight(0), float2nr(&lines*0.66), 25])
+    exe "vertical resize" . (min([hmax, 140]))
+    exe "resize" . (min([vmax, 60]))
+endfunction
+
+"Open vimrc on a tab
+let mapleader = ","
+nmap <leader>r :tabedit $MYVIMRC<CR>

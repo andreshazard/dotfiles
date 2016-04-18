@@ -22,3 +22,7 @@ alias dropCreateQuartz='mysql -uroot -p quartz -e "drop database quartz; create 
 alias poblarQuartz='gunzip -c quartz-nightly.dmp.gz | mysql -uroot -p quartz'
 
 alias myip='wget http://ipinfo.io/ip -qO -'
+
+alias cdtool='cd /home/andreshazard/Dropbox/Tools'
+
+alias gvim='gvim -v'
