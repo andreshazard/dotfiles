@@ -1,6 +1,3 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
-
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -16,6 +13,7 @@ Plugin 'nvie/vim-flake8'
 Plugin 'mhinz/vim-janah'
 Plugin 'rstacruz/sparkup'
 Plugin 'jelera/vim-javascript-syntax'
+Plugin 'mrtazz/simplenote.vim'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -51,8 +49,8 @@ set nowrap
 set number
 set nowritebackup
 set nobackup
-nmap <silent> <C-N> :silent noh<CR>
 set ignorecase
+nmap <silent> <C-N> :silent noh<CR>
 
 " Highlight search terms...
 set hlsearch
@@ -87,7 +85,8 @@ vno <right> <nop>
 vno <up> <nop>
 
 "Easy escape
-imap lh <Esc>
+inoremap jk <esc>
+"Disable <esc> to force jk mapping
 
 "For when I make mistakes
 cmap W w
@@ -107,8 +106,7 @@ map <leader>v :vsp %%
 
 "Open Command T
 let g:CommandTCursorStartMap='<leader>f'
-map <leader>f :CommandTFlush<cr>\|:CommandT<cr>
-map <leader>gf :CommandTFlush<cr>\|:CommandT %%<cr>
+noremap <leader>f :CommandTFlush<cr>\|:CommandT<cr>
 
 " Jump to last cursor position unless it's invalid or in an event handler
 autocmd BufReadPost *
@@ -126,24 +124,8 @@ nnoremap <silent><C-L> <C-W><C-L>:call SplitResize()<CR>
 nnoremap <silent><C-H> <C-W><C-H>:call SplitResize()<CR>
 
 " Loation of splits
-set splitbelow
 set splitright
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" MULTIPURPOSE TAB KEY
-" Indent if we're at the beginning of a line. Else, do completion.
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! InsertTabWrapper()
-    let col = col('.') - 0
-    if !col || getline('.')[col - 1] !~ '\k'
-        return "\<tab>"
-    else
-        return "\<c-p>"
-    endif
-endfunction
-inoremap <expr> <tab> InsertTabWrapper()
-inoremap <s-tab> <c-n>
-
+set splitbelow
 
 
 "NEOCOMPLCACHE SETTINGS for jedi-vim
@@ -202,13 +184,35 @@ colorscheme janah
 
 
 "Resize splits automatically
-function SplitResize()
-    let hmax = max([winwidth(0), float2nr(&columns*0.66), 90])
-    let vmax = max([winheight(0), float2nr(&lines*0.66), 25])
-    exe "vertical resize" . (min([hmax, 140]))
-    exe "resize" . (min([vmax, 60]))
-endfunction
+if !exists("*SplitResize")
+    function SplitResize()
+        let hmax = max([winwidth(0), float2nr(&columns*0.66), 90])
+        let vmax = max([winheight(0), float2nr(&lines*0.66), 25])
+        exe "vertical resize" . (min([hmax, 140]))
+        exe "resize" . (min([vmax, 60]))
+    endfunction
+endif
 
-"Open vimrc on a tab
-let mapleader = ","
-nmap <leader>r :tabedit $MYVIMRC<CR>
+
+
+"Open simplenote on vertical window
+let g:SimplenoteVertical=1
+
+"Basic Maps
+nnoremap - ddp
+nnoremap _ ddkP
+
+"Tranform word to uppercase
+inoremap <c-u> <esc>viwUA
+
+"Edit vimrc on a vertical split
+nnoremap <leader>ev :vsplit $MYVIMRC<CR>
+
+"Source vimrc
+nnoremap <leader>sv :source $MYVIMRC<CR>
+
+"fix training typo
+iabbrev traning training
+
+"Highlight current line when using rnu
+highlight CursorLineNr ctermbg=LightBlue ctermfg=Black
