@@ -1,10 +1,9 @@
+"PLUGIN-setting {{{
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
-"Plugin 'git://git.wincent.com/command-t.git'
-Plugin 'mileszs/ack.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'scrooloose/syntastic'
@@ -14,6 +13,8 @@ Plugin 'mhinz/vim-janah'
 Plugin 'rstacruz/sparkup'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'mrtazz/simplenote.vim'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'vim-airline/vim-airline'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -26,16 +27,16 @@ filetype plugin indent on    " required
 " :PluginSearch foo - searches for foo; append `!` to refresh local cache
 " :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
 
-set nocompatible "To have all improvements from VI
 
 filetype plugin on "To detect the type of file that is edited
 filetype plugin indent on
 runtime macros/matchit.vim
-
 execute pathogen#infect()
-syntax on
+"}}}
 
-
+"BASIC-setting {{{
+syntax enable
+set nocompatible "To have all improvements from VI
 set pastetoggle=<f5> "for better pasting from clipboard
 set rnu "Relative number
 
@@ -45,12 +46,11 @@ set softtabstop=4
 set shiftwidth=4
 set expandtab
 
-set nowrap
+set wrap
 set number
 set nowritebackup
 set nobackup
 set ignorecase
-nmap <silent> <C-N> :silent noh<CR>
 
 " Highlight search terms...
 set hlsearch
@@ -64,71 +64,46 @@ set showcmd
 " Intuitive backspacing in insert mode
 set backspace=indent,eol,start
 
-syntax enable
-
-" disabled autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-autocmd FileType c set omnifunc=ccomplete#Complete
-
-" To not use arrows
-ino <down> <nop>
-ino <left> <nop>
-ino <right> <nop>
-ino <up> <nop>
-vno <down> <nop>
-vno <left> <nop>
-vno <right> <nop>
-vno <up> <nop>
-
-"Easy escape
-inoremap jk <esc>
-"Disable <esc> to force jk mapping
-
-"For when I make mistakes
-cmap W w
-cmap Q q
-
-"leader
-let mapleader=","
-
-"Copy and past from the clipboard
-vmap <leader>y "+y
-nmap <leader>p "+p
-
-"Edit file on current directory
-cnoremap %% <C-R>=expand('%:h').'/'<cr>
-map <leader>e :edit %%
-map <leader>v :vsp %%
-
-"Open Command T
-let g:CommandTCursorStartMap='<leader>f'
-noremap <leader>f :CommandTFlush<cr>\|:CommandT<cr>
-
-" Jump to last cursor position unless it's invalid or in an event handler
-autocmd BufReadPost *
-\ if line("'\"") > 0 && line("'\"") <= line("$") |
-\   exe "normal g`\"" |
-\ endif
-
-"This unsets the last search pattern register by hitting return
-nnoremap <CR> :noh<CR><CR>
-
-" Move around splits with <c-hjkl>
-nnoremap <silent><C-J> <C-W><C-J>:call SplitResize()<CR>
-nnoremap <silent><C-K> <C-W><C-K>:call SplitResize()<CR>
-nnoremap <silent><C-L> <C-W><C-L>:call SplitResize()<CR>
-nnoremap <silent><C-H> <C-W><C-H>:call SplitResize()<CR>
-
 " Loation of splits
 set splitright
 set splitbelow
 
+"clean search when sourcing
+noh
+"}}}
 
-"NEOCOMPLCACHE SETTINGS for jedi-vim
+" FILETYPE-specific settings {{{
+augroup filetype_python
+    autocmd FileType python  nnoremap <buffer> <localleader>c I#<esc>
+    autocmd FileType python :iabbrev <buffer> iff if:<left>
+augroup END
+
+augroup filetype_javascript
+    autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+    autocmd FileType javascript nnoremap <buffer> <localleader>c I//<esc>
+    autocmd FileType javascript :iabbrev <buffer> iff if ()<left><left>
+augroup END
+
+augroup filetype_markdown
+    "add header option parameter
+    autocmd FileType markdown onoremap ih :<c-u>execute "normal! ?^[==\|--]\\+$\r:nohlsearch\rkvg_"<cr>
+augroup END
+
+augroup filetype_vim
+    autocmd!
+    autocmd FileType vim setlocal foldmethod=marker
+    autocmd FileType vim setlocal foldlevelstart=0
+augroup END
+" }}}
+
+" Jump to last cursor {{{
+autocmd BufReadPost *
+\ if line("'\"") > 0 && line("'\"") <= line("$") |
+\   exe "normal g`\"" |
+\ endif
+"}}}
+
+"NEOCOMPLCACHE SETTINGS for jedi-vim {{{
 let g:neocomplcache_enable_at_startup = 1
 imap neosnippet#expandable() ? "(neosnippet_expand_or_jump)" : pumvisible() ? "" : "" - See more at: http://fromacoder.com/the-ultimate-python-autocompletion-for-vim/#sthash.UkvqQmZl.dpuf
 smap neosnippet#expandable() ? "(neosnippet_expand_or_jump)" : - See more at: http://fromacoder.com/the-ultimate-python-autocompletion-for-vim/#sthash.UkvqQmZl.dpuf
@@ -146,8 +121,9 @@ if !exists('g:neocomplcache_omni_functions')
     au FileType python let b:did_ftplugin = 1
     " Vim-jedi settings
     "let g:jedi#popup_on_dot = 0
+"}}}
 
-"Enhance of adition and substraction
+"Enhance of adition and substraction {{{
 function! AddSubtract(char, back)
    let pattern = &nrformats =~ 'alpha' ? '[[:alpha:][:digit:]]' : '[[:digit:]]'
    call search(pattern, 'cw' . a:back)
@@ -159,12 +135,22 @@ nnoremap <silent>         <C-a> :<C-u>call AddSubtract("\<C-a>", '')<CR>
 nnoremap <silent> <Leader><C-a> :<C-u>call AddSubtract("\<C-a>", 'b')<CR>
 nnoremap <silent>         <C-x> :<C-u>call AddSubtract("\<C-x>", '')<CR>
 nnoremap <silent> <Leader><C-x> :<C-u>call AddSubtract("\<C-x>", 'b')<CR>
+"}}}
+
+"STATUSLINE-setting {{{
+"To always see status line
+set laststatus=2
+
+"aireline theme
+let g:airline_theme='badwolf'
 
 "Configuration for Syntastic
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+"}}}
 
+"SYNTASTIC settings {{{
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
@@ -177,13 +163,9 @@ let g:syntastic_mode_map = { 'mode': 'active',
 let g:syntastic_python_pep8_args='--ignore=E501,E127,E128'
 "Hack because syntasttic_mode_map is not working to ignore java files
 let g:loaded_syntastic_java_javac_checker = 1
+"}}}
 
-"Awesome color scheme
-autocmd ColorScheme janah highlight Normal ctermbg=235
-colorscheme janah
-
-
-"Resize splits automatically
+"Resize splits automatically {{{
 if !exists("*SplitResize")
     function SplitResize()
         let hmax = max([winwidth(0), float2nr(&columns*0.66), 90])
@@ -192,11 +174,15 @@ if !exists("*SplitResize")
         exe "resize" . (min([vmax, 60]))
     endfunction
 endif
+"}}}
 
-
-
+"MAPPINGS {{{
 "Open simplenote on vertical window
 let g:SimplenoteVertical=1
+
+"leader
+let mapleader=","
+let maplocalleader="\\"
 
 "Basic Maps
 nnoremap - ddp
@@ -211,8 +197,91 @@ nnoremap <leader>ev :vsplit $MYVIMRC<CR>
 "Source vimrc
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
+"Open log files
+nnoremap <leader>es :tabedit ~/TR/target/tomcat6x/logs/spark.log<CR>
+nnoremap <leader>ec :tabedit ~/TR/target/catalina.out<CR>
+
+"fix trailing white space
+nnoremap <leader>w :FixWhitespace<CR>
+
+"run delete definers functions
+nnoremap <leader>dd :DeleteDefiners<CR>
+
 "fix training typo
 iabbrev traning training
 
-"Highlight current line when using rnu
-highlight CursorLineNr ctermbg=LightBlue ctermfg=Black
+"Copy and past from the clipboard
+vnoremap <leader>y "+y
+nnoremap <leader>p "+p
+
+"Easy escape
+inoremap jk <esc>
+
+"For when I make mistakes
+cnoremap W w
+cnoremap Q q
+
+"Begin and end of the line easier
+nnoremap H ^
+nnoremap L g_
+
+"Center screen when searching
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
+"easy unfold
+nnoremap <space> za
+
+"Edit file on current directory
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
+map <leader>e :edit %%
+map <leader>v :vsp %%
+
+"Open Command T
+let g:CommandTCursorStartMap='<leader>f'
+nnoremap <leader>f :CommandTFlush<cr>\|:CommandT<cr>
+
+"This unsets the last search pattern register by hitting return
+nnoremap <CR> :noh<CR><CR>
+
+" Move around splits with <c-hjkl>
+nnoremap <silent><C-J> <C-W><C-J>:call SplitResize()<CR>
+nnoremap <silent><C-K> <C-W><C-K>:call SplitResize()<CR>
+nnoremap <silent><C-L> <C-W><C-L>:call SplitResize()<CR>
+nnoremap <silent><C-H> <C-W><C-H>:call SplitResize()<CR>
+
+"sudo to write
+cmap w!! w !sudo tee % >/dev/null
+"}}}
+
+"Awesome color scheme {{{
+autocmd ColorScheme janah highlight Normal ctermbg=235
+colorscheme janah
+"}}}
+
+"DELETE DEFINERS from dump file {{{
+if !exists("*DeleteDefiners")
+    function DeleteDefiners()
+        execute "normal! gg"
+        "found will have the total amount of definers on the file
+        let found=0
+        "aux for searching the first time and then using the next command
+        let aux = 1
+        "populate found
+        windo let found=found+(system('grep "DEFINER" '.expand('%:p') . '| wc -l'))
+        echo found . " Definers Deleted"
+        while found > 0
+            if aux
+                "the first time I need to create the search
+                silent! execute "normal! /DEFINER\<CR>dd"
+                let aux=0
+            else
+                "now I can just do the next command
+                silent! execute "normal! ndd"
+            endif
+            let found=found-1
+        endwhile
+    endfunction
+endif
+command! DeleteDefiners call DeleteDefiners()
+"}}}
