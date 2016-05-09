@@ -68,6 +68,11 @@ set backspace=indent,eol,start
 set splitright
 set splitbelow
 
+"mouse resize
+set mouse=a
+set ttyfast
+set ttymouse=xterm2
+
 "clean search when sourcing
 noh
 "}}}
@@ -104,7 +109,7 @@ autocmd BufReadPost *
 "}}}
 
 "NEOCOMPLCACHE SETTINGS for jedi-vim {{{
-let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_enable_at_startup = 0
 imap neosnippet#expandable() ? "(neosnippet_expand_or_jump)" : pumvisible() ? "" : "" - See more at: http://fromacoder.com/the-ultimate-python-autocompletion-for-vim/#sthash.UkvqQmZl.dpuf
 smap neosnippet#expandable() ? "(neosnippet_expand_or_jump)" : - See more at: http://fromacoder.com/the-ultimate-python-autocompletion-for-vim/#sthash.UkvqQmZl.dpuf
 let g:neocomplcache_force_overwrite_completefunc = 1
@@ -207,6 +212,9 @@ nnoremap <leader>w :FixWhitespace<CR>
 "run delete definers functions
 nnoremap <leader>dd :DeleteDefiners<CR>
 
+"run line as a Ex Command, to study vimscripting
+nnoremap <leader>rc v$hyq:p<cr>
+
 "fix training typo
 iabbrev traning training
 
@@ -224,12 +232,14 @@ cnoremap Q q
 "Begin and end of the line easier
 nnoremap H ^
 nnoremap L g_
+vnoremap H ^
+vnoremap L g_
 
 "Center screen when searching
 nnoremap n nzzzv
 nnoremap N Nzzzv
 
-"easy unfold
+"easy fold
 nnoremap <space> za
 
 "Edit file on current directory
@@ -252,6 +262,19 @@ nnoremap <silent><C-H> <C-W><C-H>:call SplitResize()<CR>
 
 "sudo to write
 cmap w!! w !sudo tee % >/dev/null
+
+"FTL plugin mappings
+"nmap <leader>fl <Plug>FTLList
+"nmap <leader>fb <Plug>FTLBigList
+"nmap <leader>fi <Plug>FTLIf
+"nmap <leader>fs <Plug>FTLSwitch
+"nmap <leader>fa <Plug>FTLAssign
+
+"Log Review Plugin
+nnoremap <leader>bf :call FoldStackBelow()<CR>
+
+
+
 "}}}
 
 "Awesome color scheme {{{
@@ -267,7 +290,7 @@ if !exists("*DeleteDefiners")
         let found=0
         "aux for searching the first time and then using the next command
         let aux = 1
-        "populate found
+        "populate found with the search results
         windo let found=found+(system('grep "DEFINER" '.expand('%:p') . '| wc -l'))
         echo found . " Definers Deleted"
         while found > 0
@@ -284,4 +307,18 @@ if !exists("*DeleteDefiners")
     endfunction
 endif
 command! DeleteDefiners call DeleteDefiners()
+"}}}
+
+" MULTIPURPOSE TAB KEY{{{
+" Indent if we're at the beginning of a line. Else, do completion.
+function! InsertTabWrapper()
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<tab>"
+    else
+        return "\<c-p>"
+    endif
+endfunction
+inoremap <expr> <tab> InsertTabWrapper()
+inoremap <s-tab> <c-n>
 "}}}

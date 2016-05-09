@@ -12,6 +12,7 @@ alias suspend='systemctl suspend'
 
 alias lock='gnome-screensaver-command --lock'
 
+#drop, create, and deploy DB
 alias dropCreateSpark='mysql -uroot -p spark -e "drop database spark; create database spark;"'
 alias poblarSpark='gunzip -c spark-nightly.dmp.gz | mysql -uroot -p spark'
 
@@ -26,3 +27,14 @@ alias myip='wget http://ipinfo.io/ip -qO -'
 alias cdtool='cd /home/andreshazard/Dropbox/Tools'
 
 alias gvim='gvim -v'
+
+alias vim='gvim -v'
+
+alias cl='clear'
+
+#Navigate up the directory using ..n
+alias ..='cd ..'
+alias ..2='cd ../..'
+alias ..3='cd ../../..'
+alias ..4='cd ../../../..'
+alias ..5='cd ../../../../..'
