@@ -10,11 +10,12 @@ Plugin 'scrooloose/syntastic'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'nvie/vim-flake8'
 Plugin 'mhinz/vim-janah'
-Plugin 'rstacruz/sparkup'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'mrtazz/simplenote.vim'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'vim-airline/vim-airline'
+Plugin 'andreshazard/vim-logreview'
+Plugin 'andreshazard/vim-freemarker'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -69,7 +70,7 @@ set splitright
 set splitbelow
 
 "mouse resize
-set mouse=a
+"set mouse=a
 set ttyfast
 set ttymouse=xterm2
 
@@ -210,7 +211,7 @@ nnoremap <leader>ec :tabedit ~/TR/target/catalina.out<CR>
 nnoremap <leader>w :FixWhitespace<CR>
 
 "run delete definers functions
-nnoremap <leader>dd :DeleteDefiners<CR>
+nnoremap <leader>dd :call DeleteDefiners()<CR>
 
 "run line as a Ex Command, to study vimscripting
 nnoremap <leader>rc v$hyq:p<cr>
@@ -273,7 +274,12 @@ cmap w!! w !sudo tee % >/dev/null
 "Log Review Plugin
 nnoremap <leader>bf :call FoldStackBelow()<CR>
 
+"switch relative number
+nnoremap <leader>nn :call mappings#cycle_numbering()<CR>
 
+" Use tab and shift-tab to cycle through Splits.
+nnoremap <Tab> <C-W>w
+nnoremap <S-Tab> <C-W>W
 
 "}}}
 
@@ -282,35 +288,7 @@ autocmd ColorScheme janah highlight Normal ctermbg=235
 colorscheme janah
 "}}}
 
-"DELETE DEFINERS from dump file {{{
-if !exists("*DeleteDefiners")
-    function DeleteDefiners()
-        execute "normal! gg"
-        "found will have the total amount of definers on the file
-        let found=0
-        "aux for searching the first time and then using the next command
-        let aux = 1
-        "populate found with the search results
-        windo let found=found+(system('grep "DEFINER" '.expand('%:p') . '| wc -l'))
-        echo found . " Definers Deleted"
-        while found > 0
-            if aux
-                "the first time I need to create the search
-                silent! execute "normal! /DEFINER\<CR>dd"
-                let aux=0
-            else
-                "now I can just do the next command
-                silent! execute "normal! ndd"
-            endif
-            let found=found-1
-        endwhile
-    endfunction
-endif
-command! DeleteDefiners call DeleteDefiners()
-"}}}
-
-" MULTIPURPOSE TAB KEY{{{
-" Indent if we're at the beginning of a line. Else, do completion.
+" Indent if we're at the beginning of a line. Else, do completion. {{{
 function! InsertTabWrapper()
     let col = col('.') - 1
     if !col || getline('.')[col - 1] !~ '\k'
@@ -321,4 +299,12 @@ function! InsertTabWrapper()
 endfunction
 inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
+"}}}
+
+"DELETE DEFINERS from dump file {{{
+function! DeleteDefiners()
+     silent! execute "normal! mz:g/DEFINER/d\<CR>'z"
+     echo "done"
+endfunction
+command! DeleteDefiners call DeleteDefiners()
 "}}}
