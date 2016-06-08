@@ -1,1 +1,17 @@
-source ~/.vimrc
+set rnu "Relative number
+
+"Easy escape
+inoremap jk <esc>
+
+"Basic Maps
+nnoremap - ddp
+nnoremap _ ddkP
+
+"Tranform word to uppercase
+inoremap <c-u> <esc>viwUA
+
+"Begin and end of the line easier
+nnoremap H ^
+nnoremap L g_
+vnoremap H ^
+vnoremap L g_

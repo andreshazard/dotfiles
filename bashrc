@@ -1,12 +1,10 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
+#define GIT_COLOR_NORMAL “”
 
 # If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
+[ -z "$PS1" ] && return
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -56,15 +54,16 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-#if [ "$color_prompt" = yes ]; then
-#    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-#else
-#    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-#fi
-#unset color_prompt force_color_prompt
+
+# Add git branch if its present to PS1
+parse_git_branch() {
+ git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;31m\]$(parse_git_branch)\[\033[00m\]\$ '
+unset color_prompt force_color_prompt
 
 # Color green for username
-PS1="\e[0;32m[\u@\h \W]\$ \e[m " 
+#PS1="\e[0;32m[\u@\h \W]\$ \e[m " 
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in

@@ -26,10 +26,8 @@ alias myip='wget http://ipinfo.io/ip -qO -'
 
 alias cdtool='cd /home/andreshazard/Dropbox/Tools'
 
-#alias vi='vim'
-#alias gvim='gvim -v'
-
-#alias vim='gvim -v'
+alias vi='vim'
+alias vim='gvim -v'
 
 alias cl='clear'
 

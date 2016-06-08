@@ -16,6 +16,7 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'vim-airline/vim-airline'
 Plugin 'andreshazard/vim-logreview'
 Plugin 'andreshazard/vim-freemarker'
+Plugin 'mattn/emmet-vim'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
