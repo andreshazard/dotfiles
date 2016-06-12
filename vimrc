@@ -278,9 +278,15 @@ nnoremap <leader>bf :call FoldStackBelow()<CR>
 "switch relative number
 nnoremap <leader>nn :call mappings#cycle_numbering()<CR>
 
-" Use tab and shift-tab to cycle through Splits.
+"Use tab and shift-tab to cycle through Splits.
 nnoremap <Tab> <C-W>w
 nnoremap <S-Tab> <C-W>W
+
+"Add blank line below
+nnoremap [a o<esc>k
+
+"Add blank line above
+nnoremap [A O<esc>j
 
 "}}}
 

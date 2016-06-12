@@ -15,3 +15,7 @@ nnoremap H ^
 nnoremap L g_
 vnoremap H ^
 vnoremap L g_
+
+"Center screen when searching
+nnoremap n nzzzv
+nnoremap N Nzzzv
