@@ -310,12 +310,3 @@ endfunction
 inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
 "}}}
-
-"DELETE DEFINERS from dump file {{{
-function! DeleteDefiners()
-     silent! execute "normal! mz:g/DEFINER/d\<CR>'z"
-     echo "done"
-endfunction
-command! DeleteDefiners call DeleteDefiners()
-"}}}
-
