@@ -81,8 +81,10 @@ noh
 
 " FILETYPE-specific settings {{{
 augroup filetype_python
-    autocmd FileType python  nnoremap <buffer> <localleader>c I#<esc>
+    autocmd FileType python nnoremap <buffer> <localleader>c I#<esc>
     autocmd FileType python :iabbrev <buffer> iff if:<left>
+    " run test
+    autocmd FileType python nnoremap <buffer> <localleader>rt :! nosetests -v "test_%"<CR>
 augroup END
 
 augroup filetype_javascript
