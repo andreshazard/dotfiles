@@ -84,7 +84,8 @@ augroup filetype_python
     autocmd FileType python nnoremap <buffer> <localleader>c I#<esc>
     autocmd FileType python :iabbrev <buffer> iff if:<left>
     " run test
-    autocmd FileType python nnoremap <buffer> <localleader>rt :! nosetests -v "test_%"<CR>
+    " autocmd FileType python nnoremap <buffer> <localleader>rt :! nosetests -v "test_%"<CR>
+    autocmd FileType python nnoremap <leader>rt :call mappings#run_python_test()<esc>
 augroup END
 
 augroup filetype_javascript
@@ -317,3 +318,4 @@ function! DeleteDefiners()
 endfunction
 command! DeleteDefiners call DeleteDefiners()
 "}}}
+
