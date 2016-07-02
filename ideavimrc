@@ -19,3 +19,9 @@ vnoremap L g_
 "Center screen when searching
 nnoremap n nzzzv
 nnoremap N Nzzzv
+
+"Add blank line below
+nnoremap [a o<esc>k
+
+"Add blank line above
+nnoremap [A O<esc>j

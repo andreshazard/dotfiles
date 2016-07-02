@@ -83,9 +83,6 @@ noh
 augroup filetype_python
     autocmd FileType python nnoremap <buffer> <localleader>c I#<esc>
     autocmd FileType python :iabbrev <buffer> iff if:<left>
-    " run test
-    " autocmd FileType python nnoremap <buffer> <localleader>rt :! nosetests -v "test_%"<CR>
-    autocmd FileType python nnoremap <leader>rt :call mappings#run_python_test()<esc>
 augroup END
 
 augroup filetype_javascript
@@ -113,26 +110,6 @@ autocmd BufReadPost *
 \ endif
 "}}}
 
-"NEOCOMPLCACHE SETTINGS for jedi-vim {{{
-let g:neocomplcache_enable_at_startup = 0
-imap neosnippet#expandable() ? "(neosnippet_expand_or_jump)" : pumvisible() ? "" : "" - See more at: http://fromacoder.com/the-ultimate-python-autocompletion-for-vim/#sthash.UkvqQmZl.dpuf
-smap neosnippet#expandable() ? "(neosnippet_expand_or_jump)" : - See more at: http://fromacoder.com/the-ultimate-python-autocompletion-for-vim/#sthash.UkvqQmZl.dpuf
-let g:neocomplcache_force_overwrite_completefunc = 1
-if !exists('g:neocomplcache_omni_functions')
-  let g:neocomplcache_omni_functions = {}
-  endif
-  if !exists('g:neocomplcache_force_omni_patterns')
-    let g:neocomplcache_force_omni_patterns = {}
-    endif
-    let g:neocomplcache_force_overwrite_completefunc = 1
-    let g:neocomplcache_force_omni_patterns['python'] = '[^. t].w*'
-    set ofu=syntaxcomplete#Complete
-    au FileType python set omnifunc=pythoncomplete#Complete
-    au FileType python let b:did_ftplugin = 1
-    " Vim-jedi settings
-    "let g:jedi#popup_on_dot = 0
-"}}}
-
 "Enhance of adition and substraction {{{
 function! AddSubtract(char, back)
    let pattern = &nrformats =~ 'alpha' ? '[[:alpha:][:digit:]]' : '[[:digit:]]'
@@ -158,21 +135,6 @@ let g:airline_theme='badwolf'
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
-"}}}
-
-"SYNTASTIC settings {{{
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_python_checkers = ['pep8']
-let g:syntastic_mode_map = { 'mode': 'active',
-    \ 'active_filetypes': ['py'],
-    \ 'pasive_filetyes': ['javac'] }
-
-let g:syntastic_python_pep8_args='--ignore=E501,E127,E128'
-"Hack because syntasttic_mode_map is not working to ignore java files
-let g:loaded_syntastic_java_javac_checker = 1
 "}}}
 
 "Resize splits automatically {{{
