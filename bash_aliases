@@ -31,6 +31,8 @@ alias vim='gvim -v'
 
 alias cl='clear'
 
+alias pmp='grep j /home/andreshazard/Dropbox/PASSVES.txt'
+
 #Navigate up the directory using ..n
 alias ..='cd ..'
 alias ..2='cd ../..'
