@@ -176,9 +176,6 @@ nnoremap <leader>ec :tabedit ~/TR/target/catalina.out<CR>
 "fix trailing white space
 nnoremap <leader>w :FixWhitespace<CR>
 
-"run delete definers functions
-nnoremap <leader>dd :call DeleteDefiners()<CR>
-
 "run line as a Ex Command, to study vimscripting
 nnoremap <leader>rc v$hyq:p<cr>
 
