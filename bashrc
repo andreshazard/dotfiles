@@ -63,7 +63,7 @@ PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[0
 unset color_prompt force_color_prompt
 
 # Color green for username
-#PS1="\e[0;32m[\u@\h \W]\$ \e[m " 
+#PS1="\e[0;32m[\u@\h \W]\$ \e[m "
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
@@ -124,6 +124,9 @@ fi
 export M2_HOME=/home/andreshazard/Downloads/Tools/apache-maven-3.3.9
 export M2=$M2_HOME/bin
 export PATH=$M2:$PATH
+export IRCNICK=ahazard
+export IRCNICKUSER=ahazard
+export IRCSERVER=irc.freenode.net
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 export PATH=$HOME/cmus/bin:$PATH
