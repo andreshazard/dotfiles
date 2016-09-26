@@ -31,7 +31,7 @@ alias vim='gvim -v'
 
 alias cl='clear'
 
-alias pmp='grep j /home/andreshazard/Dropbox/PASSVES.txt'
+alias pmp='cd ~/Dropbox/Tools/pmpScript/ && python main.py && cd - > /dev/null'
 
 #Navigate up the directory using ..n
 alias ..='cd ..'
