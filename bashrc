@@ -17,6 +17,9 @@ shopt -s histappend
 HISTSIZE=1000
 HISTFILESIZE=2000
 
+# ignore duplicates on history file
+export HISTCONTROL=ignoredups
+
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -130,6 +133,11 @@ export IRCSERVER=irc.freenode.net
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 export PATH=$HOME/cmus/bin:$PATH
+JAVA_HOME=/usr/lib/jvm/java-8-jdk
+export JAVA_HOME
+PATH=$PATH:$JAVA_HOME/bin
+export PATH
+
 unset SSH_ASKPASS # Disable open ssh gui key
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
