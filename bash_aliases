@@ -31,7 +31,7 @@ alias vim='gvim -v'
 
 alias cl='clear'
 
-alias pmp='cd ~/Dropbox/Tools/pmpScript/ && python main.py && cd - > /dev/null'
+alias pmp='cd ~/Dropbox/Tools/pmpScript/ && python2 main.py && cd - > /dev/null'
 
 #Navigate up the directory using ..n
 alias ..='cd ..'
