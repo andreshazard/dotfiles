@@ -238,7 +238,7 @@ cmap w!! w !sudo tee % >/dev/null
 nnoremap <leader>bf :call FoldStackBelow()<CR>
 
 "switch relative number
-nnoremap <leader>nn :call mappings#cycle_numbering()<CR>
+nnoremap <leader>nn :call mappings#numbers#cycle_numbering()<CR>
 
 "Use tab and shift-tab to cycle through Splits.
 nnoremap <Tab> <C-W>w
