@@ -240,6 +240,9 @@ nnoremap <leader>bf :call FoldStackBelow()<CR>
 "switch relative number
 nnoremap <leader>nn :call mappings#numbers#cycle_numbering()<CR>
 
+"switch transparency
+nnoremap <leader>tt :call mappings#numbers#cycle_transparent()<CR>
+
 "Use tab and shift-tab to cycle through Splits.
 nnoremap <Tab> <C-W>w
 nnoremap <S-Tab> <C-W>W
@@ -250,11 +253,14 @@ nnoremap [a o<esc>k
 "Add blank line above
 nnoremap [A O<esc>j
 
+
 "}}}
 
 "Awesome color scheme {{{
 autocmd ColorScheme janah highlight Normal ctermbg=235
 colorscheme janah
+"Make background transperent
+hi Normal guibg=NONE ctermbg=NONE
 "}}}
 
 " Indent if we're at the beginning of a line. Else, do completion. {{{
@@ -269,3 +275,5 @@ endfunction
 inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
 "}}}
+"
+
