@@ -18,7 +18,7 @@ HISTSIZE=1000
 HISTFILESIZE=2000
 
 # ignore duplicates on history file
-export HISTCONTROL=ignoredups
+export HISTCONTROL=ignoreboth:erasedups
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
