@@ -2,8 +2,6 @@ alias compile='mvn compile -Pdeveloper -Dmaven.wagon.http.ssl.insecure=true -Dma
 
 alias Ccompile='mvn clean compile -Pdeveloper -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true'
 
-alias upgrade='sudo dnf upgrade'
-
 alias shutdown='sudo shutdown –h now'    #requires root password, disable it by "sudo chmod u+s /sbin/shutdown"
 
 alias restart='sudo shutdown –r now'      #requires root password, disable it by "sudo chmod u+s /sbin/shutdown"
@@ -33,9 +31,17 @@ alias cl='clear'
 
 alias pmp='cd ~/Dropbox/Tools/pmpScript/ && python2 main.py && cd - > /dev/null'
 
-#Navigate up the directory using ..n
-alias ..='cd ..'
-alias ..2='cd ../..'
-alias ..3='cd ../../..'
-alias ..4='cd ../../../..'
-alias ..5='cd ../../../../..'
+#Navigate up the directory using ..n removing becuase of zsh
+#alias ..='cd ..'
+#alias ..2='cd ../..'
+#alias ..3='cd ../../..'
+#alias ..4='cd ../../../..'
+#alias ..5='cd ../../../../..'
+
+#Start and stop services
+alias startDocker='sudo systemctl start docker.service'
+alias stopDocker='sudo systemctl stop docker.service'
+alias startMysql='sudo systemctl start mysqld.service'
+alias stopMysql='sudo systemctl stop mysqld.service'
+
+alias ll='ls -alFh'
