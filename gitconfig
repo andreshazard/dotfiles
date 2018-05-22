@@ -5,6 +5,7 @@
 [color]
     ui = auto
 [alias]
+    aa = add --all
     st = status
     ci = commit
     co = checkout
@@ -12,3 +13,9 @@
     dc = diff --cached
     pom = push origin master
     b = branch
+
+    l = "!source ~/.githelpers.sh && pretty_git_log"
+    la = !git l -all
+    r = !git l -30
+    ra = !git r -all
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit

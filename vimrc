@@ -2,22 +2,25 @@
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'chriskempson/base16-vim'
 Plugin 'gmarik/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'scrooloose/syntastic'
 Plugin 'davidhalter/jedi-vim'
-Plugin 'nvie/vim-flake8'
-Plugin 'andreshazard/vim-janah'
 Plugin 'jelera/vim-javascript-syntax'
-Plugin 'mrtazz/simplenote.vim'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'vim-airline/vim-airline'
 Plugin 'andreshazard/vim-logreview'
 Plugin 'andreshazard/vim-freemarker'
 Plugin 'mattn/emmet-vim'
 Plugin 'ConradIrwin/vim-bracketed-paste'
+Plugin 'NLKNguyen/papercolor-theme'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'godlygeek/csapprox'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -44,9 +47,9 @@ set pastetoggle=<f5> "for better pasting from clipboard
 set rnu "Relative number
 
 set smartindent
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set expandtab
 
 set wrap
@@ -73,8 +76,8 @@ set splitbelow
 
 "mouse resize
 "set mouse=a
-set ttyfast
-set ttymouse=xterm2
+"set ttyfast
+"set ttymouse=xterm2
 
 "clean search when sourcing
 noh
@@ -132,6 +135,9 @@ set laststatus=2
 "aireline theme
 let g:airline_theme='badwolf'
 
+"ctrlp settings
+"let g:ctrlp_match_window='top,order:ttb,min:1,max:20,results:20'
+
 "Configuration for Syntastic
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -178,10 +184,7 @@ nnoremap <leader>ec :tabedit ~/TR/target/catalina.out<CR>
 nnoremap <leader>w :FixWhitespace<CR>
 
 "run line as a Ex Command, to study vimscripting
-nnoremap <leader>rc v$hyq:p<cr>
-
-"fix training typo
-iabbrev traning training
+"nnoremap <leader>rc v$hyq:p<cr>
 
 "Copy and past from the clipboard
 vnoremap <leader>y "+y
@@ -213,11 +216,20 @@ map <leader>e :edit %%
 map <leader>v :vsp %%
 
 "Open Command T
-let g:CommandTCursorStartMap='<leader>f'
-nnoremap <leader>f :CommandTFlush<cr>\|:CommandT<cr>
+"let g:CommandTCursorStartMap='<leader>f'
+"nnoremap <leader>f :CommandTFlush<cr>\|:CommandT<cr>
+
+
+"CTRLP
+nnoremap <leader>t :CtrlP<CR>
+nnoremap <leader>b :CtrlPBuffer<CR>
+nnoremap <leader>m :CtrlPMRU<CR>
+
+"Syntastic
+nnoremap <leader>sr :SyntasticReset<CR>
 
 "This unsets the last search pattern register by hitting return
-nnoremap <CR> :noh<CR><CR>
+nnoremap <CR> :noh<CR>
 
 " Move around splits with <c-hjkl>
 nnoremap <silent><C-J> <C-W><C-J>:call SplitResize()<CR>
@@ -236,7 +248,7 @@ cmap w!! w !sudo tee % >/dev/null
 "nmap <leader>fa <Plug>FTLAssign
 
 "Log Review Plugin
-nnoremap <leader>bf :call FoldStackBelow()<CR>
+"nnoremap <leader>bf :call FoldStackBelow()<CR>
 
 "switch relative number
 nnoremap <leader>nn :call mappings#numbers#cycle_numbering()<CR>
@@ -257,11 +269,18 @@ nnoremap [A O<esc>j
 
 "}}}
 
-"Awesome color scheme {{{
-autocmd ColorScheme janah highlight Normal ctermbg=235
-colorscheme janah
+"Color  {{{
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
+
 "Make background transperent
 hi Normal guibg=NONE ctermbg=NONE
+
+"fix highlight color for solarize light scheme
+hi Search cterm=NONE ctermfg=grey ctermbg=lightgreen
+
 "}}}
 
 " Indent if we're at the beginning of a line. Else, do completion. {{{
@@ -277,15 +296,4 @@ inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
 "}}}
 "
-" Automatic indenent when pasting {{{
-let &t_SI .= "\<Esc>[?2004h"
-let &t_EI .= "\<Esc>[?2004l"
-
-inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
-
-function! XTermPasteBegin()
-  set pastetoggle=<Esc>[201~
-    set paste
-      return ""
-endfunction
-"}}}
+"
