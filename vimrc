@@ -2,25 +2,21 @@
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'chriskempson/base16-vim'
 Plugin 'gmarik/Vundle.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
-Plugin 'bronson/vim-trailing-whitespace'
-Plugin 'scrooloose/syntastic'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'jelera/vim-javascript-syntax'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'vim-airline/vim-airline'
+Plugin 'bronson/vim-trailing-whitespace'
+Plugin 'scrooloose/syntastic'
+Plugin 'jelera/vim-javascript-syntax'
 Plugin 'andreshazard/vim-logreview'
-Plugin 'andreshazard/vim-freemarker'
-Plugin 'mattn/emmet-vim'
+Plugin 'nvie/vim-flake8'
 Plugin 'ConradIrwin/vim-bracketed-paste'
-Plugin 'NLKNguyen/papercolor-theme'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'godlygeek/csapprox'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'altercation/vim-colors-solarized.git'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -37,7 +33,6 @@ filetype plugin indent on    " required
 filetype plugin on "To detect the type of file that is edited
 filetype plugin indent on
 runtime macros/matchit.vim
-execute pathogen#infect()
 "}}}
 
 "BASIC-setting {{{
@@ -45,6 +40,9 @@ syntax enable
 set nocompatible "To have all improvements from VI
 set pastetoggle=<f5> "for better pasting from clipboard
 set rnu "Relative number
+
+set background=light
+colorscheme solarized
 
 set smartindent
 set tabstop=2
@@ -59,7 +57,7 @@ set nobackup
 set ignorecase
 
 " Highlight search terms...
-set hlsearch
+set nohlsearch
 set incsearch
 
 set smartcase
@@ -74,10 +72,13 @@ set backspace=indent,eol,start
 set splitright
 set splitbelow
 
-"mouse resize
-"set mouse=a
-"set ttyfast
-"set ttymouse=xterm2
+" Flask
+let g:flake8_show_quickfix=0
+let g:syntastic_python_flake8_args='--ignore=E501,E126,E123'
+
+" JediVim
+let g:jedi#auto_initialization = 0
+let g:jedi#popup_on_dot = 0
 
 "clean search when sourcing
 noh
@@ -155,7 +156,24 @@ if !exists("*SplitResize")
 endif
 "}}}
 
-"MAPPINGS {{{
+"{{{ Cycle through relativenumber + number, number (only), and no numbering.
+if !exists("*Cycle_Numbering")
+  function! Cycle_Numbering() abort
+    if exists('+relativenumber')
+      execute {
+            \ '00': 'set relativenumber   | set number',
+            \ '01': 'set norelativenumber | set number',
+            \ '10': 'set norelativenumber | set nonumber',
+            \ '11': 'set norelativenumber | set number' }[&number . &relativenumber]
+    else
+      " No relative numbering, just toggle numbers on and off.
+      set number!
+    endif
+  endfunction
+endif
+"}}}
+
+" MAPPINGS {{{
 "Open simplenote on vertical window
 let g:SimplenoteVertical=1
 
@@ -213,7 +231,7 @@ nnoremap <space> za
 "Edit file on current directory
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 map <leader>e :edit %%
-map <leader>v :vsp %%
+map <leader>v :vsp
 
 "Open Command T
 "let g:CommandTCursorStartMap='<leader>f'
@@ -251,7 +269,7 @@ cmap w!! w !sudo tee % >/dev/null
 "nnoremap <leader>bf :call FoldStackBelow()<CR>
 
 "switch relative number
-nnoremap <leader>nn :call mappings#numbers#cycle_numbering()<CR>
+nnoremap <leader>nn :call Cycle_Numbering()<CR>
 
 "switch transparency
 nnoremap <leader>tt :call mappings#numbers#cycle_transparent()<CR>
@@ -269,20 +287,6 @@ nnoremap [A O<esc>j
 
 "}}}
 
-"Color  {{{
-if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
-  source ~/.vimrc_background
-endif
-
-"Make background transperent
-hi Normal guibg=NONE ctermbg=NONE
-
-"fix highlight color for solarize light scheme
-hi Search cterm=NONE ctermfg=grey ctermbg=lightgreen
-
-"}}}
-
 " Indent if we're at the beginning of a line. Else, do completion. {{{
 function! InsertTabWrapper()
     let col = col('.') - 1
@@ -295,5 +299,3 @@ endfunction
 inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
 "}}}
-"
-"
