@@ -112,7 +112,7 @@ if [[ ! -d $ZSH_CACHE_DIR ]]; then
   mkdir $ZSH_CACHE_DIR
 fi
 
-source $ZSH/oh-my-zsh.sh
+source $HOME/.oh-my-zsh/oh-my-zsh.sh
 source $HOME/.bash_aliases
 
 export M2_HOME=/home/andreshazard/Downloads/Tools/apache-maven-3.3.9

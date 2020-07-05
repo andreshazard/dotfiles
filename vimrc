@@ -4,15 +4,13 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'tpope/vim-fugitive'
+"Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'vim-airline/vim-airline'
+"Plugin 'vim-airline/vim-airline-themes'
+"Plugin 'vim-airline/vim-airline'
 Plugin 'bronson/vim-trailing-whitespace'
-Plugin 'scrooloose/syntastic'
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'andreshazard/vim-logreview'
+"Plugin 'vim-syntastic/syntastic'
 Plugin 'nvie/vim-flake8'
 Plugin 'ConradIrwin/vim-bracketed-paste'
 Plugin 'davidhalter/jedi-vim'
@@ -73,12 +71,14 @@ set splitright
 set splitbelow
 
 " Flask
-let g:flake8_show_quickfix=0
-let g:syntastic_python_flake8_args='--ignore=E501,E126,E123'
+let g:syntastic_python_flake8_args='--ignore=E501'
+let g:flake8_show_quickfix=1
+let g:flake8_show_in_gutter=1
+autocmd BufWritePost *.py call flake8#Flake8()
 
 " JediVim
-let g:jedi#auto_initialization = 0
-let g:jedi#popup_on_dot = 0
+let g:jedi#auto_initialization = 1
+"let g:jedi#popup_on_dot = 1
 
 "clean search when sourcing
 noh
@@ -140,9 +140,9 @@ let g:airline_theme='badwolf'
 "let g:ctrlp_match_window='top,order:ttb,min:1,max:20,results:20'
 
 "Configuration for Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
 "}}}
 
 "Resize splits automatically {{{
@@ -174,6 +174,7 @@ endif
 "}}}
 
 " MAPPINGS {{{
+
 "Open simplenote on vertical window
 let g:SimplenoteVertical=1
 
@@ -231,23 +232,13 @@ nnoremap <space> za
 "Edit file on current directory
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 map <leader>e :edit %%
-map <leader>v :vsp
-
-"Open Command T
-"let g:CommandTCursorStartMap='<leader>f'
-"nnoremap <leader>f :CommandTFlush<cr>\|:CommandT<cr>
-
-
-"CTRLP
-nnoremap <leader>t :CtrlP<CR>
-nnoremap <leader>b :CtrlPBuffer<CR>
-nnoremap <leader>m :CtrlPMRU<CR>
+map <leader>v :vsp %%
 
 "Syntastic
 nnoremap <leader>sr :SyntasticReset<CR>
 
 "This unsets the last search pattern register by hitting return
-nnoremap <CR> :noh<CR>
+"nnoremap <CR> :noh<CR>
 
 " Move around splits with <c-hjkl>
 nnoremap <silent><C-J> <C-W><C-J>:call SplitResize()<CR>
@@ -257,16 +248,6 @@ nnoremap <silent><C-H> <C-W><C-H>:call SplitResize()<CR>
 
 "sudo to write
 cmap w!! w !sudo tee % >/dev/null
-
-"FTL plugin mappings
-"nmap <leader>fl <Plug>FTLList
-"nmap <leader>fb <Plug>FTLBigList
-"nmap <leader>fi <Plug>FTLIf
-"nmap <leader>fs <Plug>FTLSwitch
-"nmap <leader>fa <Plug>FTLAssign
-
-"Log Review Plugin
-"nnoremap <leader>bf :call FoldStackBelow()<CR>
 
 "switch relative number
 nnoremap <leader>nn :call Cycle_Numbering()<CR>
@@ -284,6 +265,8 @@ nnoremap [a o<esc>k
 "Add blank line above
 nnoremap [A O<esc>j
 
+"Don't use <c-i> as tab
+nnoremap <C-I> <C-I>
 
 "}}}
 
@@ -298,4 +281,5 @@ function! InsertTabWrapper()
 endfunction
 inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
+
 "}}}
