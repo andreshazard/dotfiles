@@ -4,17 +4,20 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
-"Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
-"Plugin 'vim-airline/vim-airline-themes'
-"Plugin 'vim-airline/vim-airline'
+Plugin 'tpope/vim-fugitive'
 Plugin 'bronson/vim-trailing-whitespace'
-"Plugin 'vim-syntastic/syntastic'
 Plugin 'nvie/vim-flake8'
-Plugin 'ConradIrwin/vim-bracketed-paste'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'altercation/vim-colors-solarized.git'
+Plugin 'NLKNguyen/copy-cut-paste.vim'
+Plugin 'pangloss/vim-javascript'
+Plugin 'leafgarland/typescript-vim'
+Plugin 'MaxMEllon/vim-jsx-pretty'
+Plugin 'jparise/vim-graphql'
+Plugin 'dense-analysis/ale'
+Plugin 'prettier/vim-prettier'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -70,10 +73,8 @@ set backspace=indent,eol,start
 set splitright
 set splitbelow
 
-" Flask
+" Flake8
 let g:syntastic_python_flake8_args='--ignore=E501'
-let g:flake8_show_quickfix=1
-let g:flake8_show_in_gutter=1
 autocmd BufWritePost *.py call flake8#Flake8()
 
 " JediVim
@@ -84,7 +85,7 @@ let g:jedi#auto_initialization = 1
 noh
 "}}}
 
-" FILETYPE-specific settings {{{
+" FILETYPE-testific settings {{{
 augroup filetype_python
     autocmd FileType python nnoremap <buffer> <localleader>c I#<esc>
     autocmd FileType python :iabbrev <buffer> iff if:<left>
@@ -106,6 +107,23 @@ augroup filetype_vim
     autocmd FileType vim setlocal foldmethod=marker
     autocmd FileType vim setlocal foldlevelstart=0
 augroup END
+
+augroup SyntaxSettings
+    autocmd!
+    autocmd BufNewFile,BufRead *.tsx set filetype=typescript
+augroup END
+
+" ALE
+let g:ale_sign_error='●'
+let g:ale_sign_warning='.'
+let g:ale_lint_on_enter=0
+let g:ale_linters = {
+    \ 'javascript': ['eslint', 'prettier']
+    \ }
+let g:ale_javascript_eslint_executable='npx eslint'
+let b:ale_fixers = {'javascript': ['prettier']}
+let g:ale_fix_on_save = 1
+let g:prettier#autoformat_require_pragma = 0
 " }}}
 
 " Jump to last cursor {{{
@@ -132,12 +150,15 @@ nnoremap <silent> <Leader><C-x> :<C-u>call AddSubtract("\<C-x>", 'b')<CR>
 "STATUSLINE-setting {{{
 "To always see status line
 set laststatus=2
+hi StatusLine ctermbg=white ctermfg=red
+highlight Pmenu ctermbg=white guibg=red
 
 "aireline theme
-let g:airline_theme='badwolf'
+"let g:airline_theme='badwolf'
 
 "ctrlp settings
-"let g:ctrlp_match_window='top,order:ttb,min:1,max:20,results:20'
+let g:ctrlp_match_window='button,order:ttb,min:1,max:20,results:20'
+let g:ctrlp_custom_ignore='node_modules\|DS_Store\|git'
 
 "Configuration for Syntastic
 "set statusline+=%#warningmsg#
@@ -187,7 +208,7 @@ nnoremap - ddp
 nnoremap _ ddkP
 
 "Tranform word to uppercase
-inoremap <c-u> <esc>viwUA
+inoremap <c-u> <esc>viwUE
 
 "Edit vimrc on a vertical split
 nnoremap <leader>ev :vsplit $MYVIMRC<CR>
@@ -195,15 +216,8 @@ nnoremap <leader>ev :vsplit $MYVIMRC<CR>
 "Source vimrc
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
-"Open log files
-nnoremap <leader>es :tabedit ~/TR/target/tomcat6x/logs/spark.log<CR>
-nnoremap <leader>ec :tabedit ~/TR/target/catalina.out<CR>
-
 "fix trailing white space
 nnoremap <leader>w :FixWhitespace<CR>
-
-"run line as a Ex Command, to study vimscripting
-"nnoremap <leader>rc v$hyq:p<cr>
 
 "Copy and past from the clipboard
 vnoremap <leader>y "+y
@@ -252,9 +266,6 @@ cmap w!! w !sudo tee % >/dev/null
 "switch relative number
 nnoremap <leader>nn :call Cycle_Numbering()<CR>
 
-"switch transparency
-nnoremap <leader>tt :call mappings#numbers#cycle_transparent()<CR>
-
 "Use tab and shift-tab to cycle through Splits.
 nnoremap <Tab> <C-W>w
 nnoremap <S-Tab> <C-W>W
@@ -268,7 +279,40 @@ nnoremap [A O<esc>j
 "Don't use <c-i> as tab
 nnoremap <C-I> <C-I>
 
+"CtrlP on Buffer
+nnoremap <leader>b :CtrlPBuffer<CR>
+
+"Run Test
+nnoremap <leader>t :w <CR> :!clear & python3 -m pytest -v % <CR>
+nnoremap <leader><leader> :!!<CR>
+
 "}}}
+
+" SWITCH BETWEEN TEST AND PRODUCTION CODE {{{
+function! OpenTestAlternate()
+  let new_file = AlternateForCurrentFile()
+  exec ':e ' . new_file
+endfunction
+function! AlternateForCurrentFile()
+  let current_file = expand("%")
+  let new_file = current_file
+  let in_test = match(current_file, '^tests/') != -1
+  let going_to_test = !in_test
+  let in_src = match(current_file, '\<blueprints\>') != -1 || match(current_file, '\<models\>') != -1 || match(current_file, '\<commons\>') != -1  || match(current_file, '\<services\>') != -1
+  if going_to_test
+    if in_src
+      let new_file = substitute(new_file, '^src/', '', '')
+    end
+    let new_file = substitute(new_file, expand("%:t"), "test_" . expand("%:t"), "")
+    let new_file = 'tests/' . new_file
+  else
+    let new_file = substitute(new_file, 'test_', '', '')
+    let new_file = substitute(new_file, '^tests/', 'src/', '')
+  endif
+  return new_file
+endfunction
+nnoremap <leader>. :call OpenTestAlternate()<cr>
+}}}
 
 " Indent if we're at the beginning of a line. Else, do completion. {{{
 function! InsertTabWrapper()
