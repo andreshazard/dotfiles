@@ -74,7 +74,6 @@ ZSH_THEME="simple"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git z vi-mode)
 
 
 # User configuration
@@ -91,8 +90,6 @@ plugins=(git z vi-mode)
 #   export EDITOR='mvim'
 # fi
 
-# Compilation flags
-export ARCHFLAGS="-arch x86_64"
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
@@ -115,27 +112,7 @@ fi
 source $HOME/.oh-my-zsh/oh-my-zsh.sh
 source $HOME/.bash_aliases
 
-export M2_HOME=/home/andreshazard/Downloads/Tools/apache-maven-3.3.9
-export M2=$M2_HOME/bin
-export PATH=$M2:$PATH
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-export PATH=$HOME/cmus/bin:$PATH
-JAVA_HOME=/usr/lib/jvm/java-8-jdk
-export JAVA_HOME
-PATH=$PATH:$JAVA_HOME/bin
-export PATH
-
-#Dropbox
 export VISUAL="vim"
 
-# base 16 git hub
-BASE16_SHELL=$HOME/.config/base16-shell/
-[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
-export PATH=$HOME/bin:$PATH
-
-#excerfice pagina
-if [ -f ~/.config/exercism/exercism_completion.zsh ]; then
-  . ~/.config/exercism/exercism_completion.zsh
-fi
 
 unsetopt HIST_VERIFY

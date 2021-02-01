@@ -16,7 +16,6 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'leafgarland/typescript-vim'
 Plugin 'MaxMEllon/vim-jsx-pretty'
 Plugin 'jparise/vim-graphql'
-Plugin 'dense-analysis/ale'
 Plugin 'prettier/vim-prettier'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -43,7 +42,7 @@ set pastetoggle=<f5> "for better pasting from clipboard
 set rnu "Relative number
 
 set background=light
-colorscheme solarized
+"colorscheme solarized
 
 set smartindent
 set tabstop=2
@@ -79,18 +78,13 @@ autocmd BufWritePost *.py call flake8#Flake8()
 
 " JediVim
 let g:jedi#auto_initialization = 1
-"let g:jedi#popup_on_dot = 1
+let g:jedi#popup_on_dot = 1
 
 "clean search when sourcing
 noh
 "}}}
 
 " FILETYPE-testific settings {{{
-augroup filetype_python
-    autocmd FileType python nnoremap <buffer> <localleader>c I#<esc>
-    autocmd FileType python :iabbrev <buffer> iff if:<left>
-augroup END
-
 augroup filetype_javascript
     autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
     autocmd FileType javascript nnoremap <buffer> <localleader>c I//<esc>
@@ -108,22 +102,6 @@ augroup filetype_vim
     autocmd FileType vim setlocal foldlevelstart=0
 augroup END
 
-augroup SyntaxSettings
-    autocmd!
-    autocmd BufNewFile,BufRead *.tsx set filetype=typescript
-augroup END
-
-" ALE
-let g:ale_sign_error='●'
-let g:ale_sign_warning='.'
-let g:ale_lint_on_enter=0
-let g:ale_linters = {
-    \ 'javascript': ['eslint', 'prettier']
-    \ }
-let g:ale_javascript_eslint_executable='npx eslint'
-let b:ale_fixers = {'javascript': ['prettier']}
-let g:ale_fix_on_save = 1
-let g:prettier#autoformat_require_pragma = 0
 " }}}
 
 " Jump to last cursor {{{
@@ -312,7 +290,7 @@ function! AlternateForCurrentFile()
   return new_file
 endfunction
 nnoremap <leader>. :call OpenTestAlternate()<cr>
-}}}
+"}}}
 
 " Indent if we're at the beginning of a line. Else, do completion. {{{
 function! InsertTabWrapper()
