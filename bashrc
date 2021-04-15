@@ -1,10 +1,12 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
-#define GIT_COLOR_NORMAL “”
 
 # If not running interactively, don't do anything
-[ -z "$PS1" ] && return
+case $- in
+    *i*) ;;
+      *) return;;
+esac
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -16,9 +18,6 @@ shopt -s histappend
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
 HISTFILESIZE=2000
-
-# ignore duplicates on history file
-export HISTCONTROL=ignoreboth:erasedups
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -38,7 +37,7 @@ fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm-color) color_prompt=yes;;
+    xterm-color|*-256color) color_prompt=yes;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -57,16 +56,12 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-
-# Add git branch if its present to PS1
-parse_git_branch() {
- git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
-}
-PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;31m\]$(parse_git_branch)\[\033[00m\]\$ '
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
 unset color_prompt force_color_prompt
-
-# Color green for username
-#PS1="\e[0;32m[\u@\h \W]\$ \e[m "
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
@@ -89,8 +84,11 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+# colored GCC warnings and errors
+#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
 # some more ls aliases
-alias ll='ls -alFh'
+alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
@@ -117,37 +115,3 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-[ -r /home/andreshazard/.byobu/prompt ] && . /home/andreshazard/.byobu/prompt   #byobu-prompt#
-
-#    case $- in *i*)
-#    [ -z "$TMUX" ] && exec tmux
-#    esac
-
-
-export M2_HOME=/home/andreshazard/Downloads/Tools/apache-maven-3.3.9
-export M2=$M2_HOME/bin
-export PATH=$M2:$PATH
-export IRCNICK=ahazard
-export IRCNICKUSER=ahazard
-export IRCSERVER=irc.freenode.net
-
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-export PATH=$HOME/cmus/bin:$PATH
-JAVA_HOME=/usr/lib/jvm/java-8-jdk
-export JAVA_HOME
-PATH=$PATH:$JAVA_HOME/bin
-export PATH
-
-unset SSH_ASKPASS # Disable open ssh gui key
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/home/andreshazard/.sdkman"
-[[ -s "/home/andreshazard/.sdkman/bin/sdkman-init.sh" ]] && source "/home/andreshazard/.sdkman/bin/sdkman-init.sh"
-
-
-#Dropbox
-export VISUAL="vim"
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

@@ -45,9 +45,9 @@ set background=light
 "colorscheme solarized
 
 set smartindent
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 set expandtab
 
 set wrap
@@ -75,6 +75,7 @@ set splitbelow
 " Flake8
 let g:syntastic_python_flake8_args='--ignore=E501'
 autocmd BufWritePost *.py call flake8#Flake8()
+hi QuickFixLine cterm=bold gui=bold ctermfg=NONE ctermbg=226 guifg=NONE guibg=NONE
 
 " JediVim
 let g:jedi#auto_initialization = 1
@@ -262,6 +263,7 @@ nnoremap <leader>b :CtrlPBuffer<CR>
 
 "Run Test
 nnoremap <leader>t :w <CR> :!clear & python3 -m pytest -v % <CR>
+nnoremap <leader>dt :w <CR> yiw :!clear & python3 -m pytest -s -v % -k <C-r>0 <CR>
 nnoremap <leader><leader> :!!<CR>
 
 "}}}
@@ -305,3 +307,4 @@ inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
 
 "}}}
+
