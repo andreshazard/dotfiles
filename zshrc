@@ -102,3 +102,19 @@ alias python=python3
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+# set DISPLAY variable to the IP automatically assigned to WSL2 Cypress
+export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
+sudo /etc/init.d/dbus start &> /dev/null
+
+# Added by Amplify CLI binary installer
+export PATH="$HOME/.amplify/bin:$PATH"
+#
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /home/ahazard/venafi-connector-cloud/venafi-connector-site/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/ahazard/venafi-connector-cloud/venafi-connector-site/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /home/ahazard/venafi-connector-cloud/venafi-connector-site/node_modules/tabtab/.completions/sls.zsh ]] && . /home/ahazard/venafi-connector-cloud/venafi-connector-site/node_modules/tabtab/.completions/sls.zsh

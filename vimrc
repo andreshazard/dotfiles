@@ -73,7 +73,6 @@ set splitright
 set splitbelow
 
 " Flake8
-let g:syntastic_python_flake8_args='--ignore=E501'
 autocmd BufWritePost *.py call flake8#Flake8()
 hi QuickFixLine cterm=bold gui=bold ctermfg=NONE ctermbg=226 guifg=NONE guibg=NONE
 
@@ -90,6 +89,9 @@ augroup filetype_javascript
     autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
     autocmd FileType javascript nnoremap <buffer> <localleader>c I//<esc>
     autocmd FileType javascript :iabbrev <buffer> iff if ()<left><left>
+    autocmd FileType javascript set tabstop=2
+    autocmd FileType javascript set softtabstop=2
+    autocmd FileType javascript set shiftwidth=2
 augroup END
 
 augroup filetype_markdown
@@ -137,7 +139,7 @@ highlight Pmenu ctermbg=white guibg=red
 
 "ctrlp settings
 let g:ctrlp_match_window='button,order:ttb,min:1,max:20,results:20'
-let g:ctrlp_custom_ignore='node_modules\|DS_Store\|git'
+let g:ctrlp_custom_ignore='node_modules\|DS_Store\|pycache\|venv'
 
 "Configuration for Syntastic
 "set statusline+=%#warningmsg#
@@ -253,7 +255,7 @@ nnoremap <S-Tab> <C-W>W
 nnoremap [a o<esc>k
 
 "Add blank line above
-nnoremap [A O<esc>j
+nnoremap [A O<esc>jw
 
 "Don't use <c-i> as tab
 nnoremap <C-I> <C-I>
@@ -262,7 +264,7 @@ nnoremap <C-I> <C-I>
 nnoremap <leader>b :CtrlPBuffer<CR>
 
 "Run Test
-nnoremap <leader>t :w <CR> :!clear & python3 -m pytest -v % <CR>
+nnoremap <leader>t :w <CR> :!clear & python3 -m pytest -v -s % <CR>
 nnoremap <leader>dt :w <CR> yiw :!clear & python3 -m pytest -s -v % -k <C-r>0 <CR>
 nnoremap <leader><leader> :!!<CR>
 
